@@ -1,7 +1,7 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
-import { DASHBOARD_PAGE, REGISTER_PAGE } from '../constants/routes';
+import { DASHBOARD_PAGE_ROUTE, SIGNUP_PAGE_ROUTE } from '../constants/routes';
 import useFirebaseContext from '../hooks/useFirebaseContext';
 
 const LoginPage: React.FC = () => {
@@ -17,7 +17,7 @@ const LoginPage: React.FC = () => {
 
     try {
       await firebase.auth().signInWithEmailAndPassword(emailAddress, password);
-      history.push(DASHBOARD_PAGE);
+      history.push(DASHBOARD_PAGE_ROUTE);
     } catch (error) {
       setEmailAddress('');
       setPassword('');
@@ -78,7 +78,7 @@ const LoginPage: React.FC = () => {
         <div className='flex justify-center items-center flex-col w-full bg-white p-4 rounded border border-gray-primary'>
           <p className='text-sm'>
             Don't have an account?{' '}
-            <Link to={REGISTER_PAGE} className='font-bold text-blue-medium'>
+            <Link to={SIGNUP_PAGE_ROUTE} className='font-bold text-blue-medium'>
               Sign Up
             </Link>
           </p>
