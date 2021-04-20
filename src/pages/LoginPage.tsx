@@ -1,19 +1,28 @@
-import React, { FormEvent, useContext, useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
-import { REGISTER_PAGE } from '../constants/routes';
-import FirebaseContext from '../context/firebase';
+import { DASHBOARD_PAGE, REGISTER_PAGE } from '../constants/routes';
+import useFirebaseContext from '../hooks/useFirebaseContext';
 
 const LoginPage: React.FC = () => {
   const history = useHistory();
-  const { firebase } = useContext(FirebaseContext);
+  const { firebase } = useFirebaseContext();
   const [emailAddress, setEmailAddress] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string>('');
   const isInvalid = password === '' || emailAddress === '';
 
-  const handleLogin = (event: FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    try {
+      await firebase.auth().signInWithEmailAndPassword(emailAddress, password);
+      history.push(DASHBOARD_PAGE);
+    } catch (error) {
+      setEmailAddress('');
+      setPassword('');
+      setError(error.message);
+    }
   };
 
   useEffect(() => {
