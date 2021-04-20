@@ -16,7 +16,11 @@ const LoginPage: React.FC = () => {
     document.title = 'Instagram - Login';
   });
 
-  return <div>Login</div>;
+  return (
+    <div className='container flex mx-auto max-w-screen-md items-center'>
+      <p>I have no idea.</p>
+    </div>
+  );
 };
 
 export default LoginPage;
