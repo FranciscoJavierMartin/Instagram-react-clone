@@ -3,7 +3,7 @@ import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import { FIREBASE_COLLECTION_USERS } from '../constants/collections';
 import { DASHBOARD_PAGE_ROUTE, LOGIN_PAGE_ROUTE } from '../constants/routes';
-import useFirebaseContext from '../hooks/useFirebaseContext';
+import useFirebaseContext from '../hooks/context/useFirebaseContext';
 import { doesUsernameExists } from '../services/firebase';
 
 const SignUpPage: React.FC = () => {

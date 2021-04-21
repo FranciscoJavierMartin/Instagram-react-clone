@@ -2,7 +2,7 @@ import React, { FormEvent, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import { DASHBOARD_PAGE_ROUTE, SIGNUP_PAGE_ROUTE } from '../constants/routes';
-import useFirebaseContext from '../hooks/useFirebaseContext';
+import useFirebaseContext from '../hooks/context/useFirebaseContext';
 
 const LoginPage: React.FC = () => {
   const history = useHistory();
