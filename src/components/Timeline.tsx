@@ -1,6 +1,7 @@
 import React from 'react';
 import Skeleton from 'react-loading-skeleton';
 import usePhotos from '../hooks/usePhotos';
+import Post from './post';
 
 const Timeline: React.FC = () => {
   const { photos, isLoading } = usePhotos();
@@ -11,7 +12,7 @@ const Timeline: React.FC = () => {
       ) : photos.length === 0 ? (
         <p className='text-center text-2xl'>Follow people to see photos</p>
       ) : (
-        photos.map((content) => <p key={content.docId}>{content.imageSrc}</p>)
+        photos.map((content) => <Post key={content.docId} content={content}/>)
       )}
     </div>
   );
