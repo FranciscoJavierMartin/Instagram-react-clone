@@ -1,5 +1,12 @@
-import { FIREBASE_COLLECTION_USERS } from '../constants/collections';
-import { FirebaseUser } from '../interfaces/firebase';
+import {
+  FIREBASE_COLLECTION_PHOTOS,
+  FIREBASE_COLLECTION_USERS,
+} from '../constants/collections';
+import {
+  FirebasePhoto,
+  FirebaseUser,
+  PhotoWithUserDetails,
+} from '../interfaces/firebase';
 import { firebase, FieldValue } from '../lib/firebase';
 
 export async function doesUsernameExists(username: string): Promise<boolean> {
@@ -86,4 +93,37 @@ export async function updateFollowedUserFollowers(
         ? FieldValue.arrayRemove(loggedInUserDocId)
         : FieldValue.arrayUnion(loggedInUserDocId),
     });
+}
+
+export async function getPhotos(
+  userId: string,
+  following: string[]
+): Promise<PhotoWithUserDetails[]> {
+  const result = await firebase
+    .firestore()
+    .collection(FIREBASE_COLLECTION_PHOTOS)
+    .where('userId', 'in', following)
+    .get();
+
+  const userFollowedPhotos = result.docs.map<FirebasePhoto>(
+    (photo) =>
+      ({
+        ...photo.data(),
+        docId: photo.id,
+      } as FirebasePhoto)
+  );
+
+  const photosWithUserDetails = await Promise.all<PhotoWithUserDetails>(
+    userFollowedPhotos.map(async (photo) => {
+      let userLikedPhoto = false;
+      if (photo.likes.includes(userId)) {
+        userLikedPhoto = true;
+      }
+      const user = await getUserByUserId(photo.userId);
+      const { username } = user;
+      return { username, ...photo, userLikedPhoto };
+    })
+  );
+
+  return photosWithUserDetails;
 }
