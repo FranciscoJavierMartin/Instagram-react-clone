@@ -26,3 +26,64 @@ export async function getUserByUserId(userId: string): Promise<FirebaseUser> {
 
   return user as FirebaseUser;
 }
+
+export async function getSuggestedProfiles(
+  userId: string,
+  following: string[]
+): Promise<FirebaseUser[]> {
+  const usersToDiscard = following.concat(userId);
+  const result = await firebase
+    .firestore()
+    .collection(FIREBASE_COLLECTION_USERS)
+    .where('userId', 'not-in', usersToDiscard)
+    .limit(10)
+    .get();
+
+  return result.docs.map<FirebaseUser>(
+    (user) => ({ ...user.data(), docId: user.id } as FirebaseUser)
+  );
+}
+
+/**
+ * @param {string}  loggedInUserDocId - Currently logged in user document id.
+ * @param {string} profileId - User that logged User want to follow
+ * @param {boolean} isFollowingProfile - Am I currently following this user?
+ * @return {void}
+ */
+export async function updateLoggedInUserFollowing(
+  loggedInUserDocId: string,
+  profileId: string,
+  isFollowingProfile: boolean
+): Promise<void> {
+  return firebase
+    .firestore()
+    .collection(FIREBASE_COLLECTION_USERS)
+    .doc(loggedInUserDocId)
+    .update({
+      following: isFollowingProfile
+        ? FieldValue.arrayRemove(profileId)
+        : FieldValue.arrayUnion(profileId),
+    });
+}
+
+/**
+ * @param {string}  profileDocId - Currently logged in user document id.
+ * @param {string} loggedInUserDocId - User that logged User want to follow
+ * @param {boolean} isFollowingProfile - Am I currently following this user?
+ * @return {void}
+ */
+export async function updateFollowedUserFollowers(
+  profileDocId: string,
+  loggedInUserDocId: string,
+  isFollowingProfile: boolean
+): Promise<void> {
+  firebase
+    .firestore()
+    .collection(FIREBASE_COLLECTION_USERS)
+    .doc(profileDocId)
+    .update({
+      followers: isFollowingProfile
+        ? FieldValue.arrayRemove(loggedInUserDocId)
+        : FieldValue.arrayUnion(loggedInUserDocId),
+    });
+}

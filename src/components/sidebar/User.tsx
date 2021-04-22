@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { Link } from 'react-router-dom';
 
@@ -30,4 +30,4 @@ const User: React.FC<UserProps> = ({ username, fullName }) => {
   );
 };
 
-export default User;
+export default memo(User);
