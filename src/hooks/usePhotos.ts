@@ -5,11 +5,13 @@ import useUserContext from './context/useUserContext';
 
 export default function usePhotos() {
   const [photos, setPhotos] = useState<PhotoWithUserDetails[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { user } = useUserContext();
 
   useEffect(() => {
     if (user) {
       (async function getTimelinePhotos() {
+        setIsLoading(true);
         const { following } = await await getUserByUserId(user.uid);
         let followedUserPhotos: PhotoWithUserDetails[] = [];
 
@@ -19,9 +21,10 @@ export default function usePhotos() {
 
         followedUserPhotos.sort((a, b) => b.dateCreated - a.dateCreated);
         setPhotos(followedUserPhotos);
+        setIsLoading(false);
       })();
     }
   }, [user]);
 
-  return { photos };
+  return { photos, isLoading };
 }
