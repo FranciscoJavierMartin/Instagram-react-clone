@@ -5,6 +5,7 @@ import {
   DASHBOARD_PAGE_ROUTE,
   LOGIN_PAGE_ROUTE,
   SIGNUP_PAGE_ROUTE,
+  PROFILE_PAGE_ROUTE
 } from './constants/routes';
 import UserContext from './context/user';
 import useAuthListener from './hooks/useAuthListener';
@@ -15,6 +16,7 @@ import IsUserLoggedIn from './helpers/IsUserLoggedIn';
 const LoginPage = lazy(() => import('./pages/LoginPage'));
 const SignUpPage = lazy(() => import('./pages/SignUpPage'));
 const DashboardPage = lazy(() => import('./pages/DashboardPage'));
+const ProfilePage = lazy(() => import('./pages/ProfilePage'));
 
 function App() {
   const { user } = useAuthListener();
@@ -25,6 +27,9 @@ function App() {
           <Switch>
             <ProtectedRoute user={user} path={DASHBOARD_PAGE_ROUTE} exact>
               <DashboardPage />
+            </ProtectedRoute>
+            <ProtectedRoute user={user} path={PROFILE_PAGE_ROUTE} exact>
+              <ProfilePage />
             </ProtectedRoute>
             <IsUserLoggedIn
               user={user}
