@@ -1,6 +1,7 @@
-import React, { useRef } from 'react';
+import React, { RefObject, useRef } from 'react';
 import { PhotoWithUserDetails } from '../../interfaces/firebase';
 import Actions from './Actions';
+import Comments from './Comments';
 import Footer from './Footer';
 import Header from './Header';
 import Image from './Image';
@@ -10,9 +11,18 @@ interface PostProps {
 }
 
 const Post: React.FC<PostProps> = ({
-  content: { username, imageSrc, caption, docId, likes, userLikedPhoto },
+  content: {
+    username,
+    imageSrc,
+    caption,
+    docId,
+    likes,
+    userLikedPhoto,
+    comments,
+    dateCreated,
+  },
 }) => {
-  const commentInput = useRef<any>(null);
+  const commentInput: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
   const handleFocus = () => commentInput.current?.focus();
   return (
     <div className='rounded col-span-4 border bg-white border-gray-primary mb-8'>
@@ -25,6 +35,12 @@ const Post: React.FC<PostProps> = ({
         handleFocus={handleFocus}
       />
       <Footer caption={caption} username={username} />
+      <Comments
+        docId={docId}
+        comments={comments}
+        posted={dateCreated}
+        commentInput={commentInput}
+      />
     </div>
   );
 };

@@ -21,7 +21,7 @@ export interface FirebasePhoto {
   userLongitude: string;
 }
 
-interface Comment {
+export interface Comment {
   comment: string;
   displayName: string;
 }
