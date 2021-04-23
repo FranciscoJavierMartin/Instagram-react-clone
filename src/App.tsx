@@ -9,7 +9,8 @@ import {
 import UserContext from './context/user';
 import useAuthListener from './hooks/useAuthListener';
 import NotFoundPage from './pages/NotFoundPage';
-import ProtectedRoute from './helpers/protected.routes';
+import ProtectedRoute from './helpers/ProtectedRoute';
+import IsUserLoggedIn from './helpers/IsUserLoggedIn';
 
 const LoginPage = lazy(() => import('./pages/LoginPage'));
 const SignUpPage = lazy(() => import('./pages/SignUpPage'));
@@ -25,8 +26,22 @@ function App() {
             <ProtectedRoute user={user} path={DASHBOARD_PAGE_ROUTE} exact>
               <DashboardPage />
             </ProtectedRoute>
-            <Route exact path={LOGIN_PAGE_ROUTE} component={LoginPage} />
-            <Route exact path={SIGNUP_PAGE_ROUTE} component={SignUpPage} />
+            <IsUserLoggedIn
+              user={user}
+              loggedInPath={DASHBOARD_PAGE_ROUTE}
+              path={LOGIN_PAGE_ROUTE}
+              exact
+            >
+              <LoginPage />
+            </IsUserLoggedIn>
+            <IsUserLoggedIn
+              user={user}
+              loggedInPath={DASHBOARD_PAGE_ROUTE}
+              path={SIGNUP_PAGE_ROUTE}
+              exact
+            >
+              <SignUpPage />
+            </IsUserLoggedIn>
             <Route component={NotFoundPage} />
           </Switch>
         </Suspense>
