@@ -9,6 +9,7 @@ import {
 import UserContext from './context/user';
 import useAuthListener from './hooks/useAuthListener';
 import NotFoundPage from './pages/NotFoundPage';
+import ProtectedRoute from './helpers/protected.routes';
 
 const LoginPage = lazy(() => import('./pages/LoginPage'));
 const SignUpPage = lazy(() => import('./pages/SignUpPage'));
@@ -21,11 +22,9 @@ function App() {
       <Router>
         <Suspense fallback={<Loading />}>
           <Switch>
-            <Route
-              exact
-              path={DASHBOARD_PAGE_ROUTE}
-              component={DashboardPage}
-            />
+            <ProtectedRoute user={user} path={DASHBOARD_PAGE_ROUTE} exact>
+              <DashboardPage />
+            </ProtectedRoute>
             <Route exact path={LOGIN_PAGE_ROUTE} component={LoginPage} />
             <Route exact path={SIGNUP_PAGE_ROUTE} component={SignUpPage} />
             <Route component={NotFoundPage} />
