@@ -18,7 +18,8 @@
     "start": "run-p watch:css react-scripts:start",
     "build": "run-p build:css react-scripts:build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "loadtest": "loadtest --rps 5 http://localhost:3000/"
   },
   "eslintConfig": {
     "extends": [
@@ -48,6 +49,7 @@
     "@types/react-dom": "^17.0.0",
     "@types/react-router-dom": "^5.1.7",
     "autoprefixer": "^10.2.5",
+    "loadtest": "^5.1.2",
     "npm-run-all": "^4.1.5",
     "postcss": "^8.2.10",
     "postcss-cli": "^8.3.1",
