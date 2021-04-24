@@ -17,7 +17,7 @@
     "react-scripts:start": "sleep 5 && react-scripts start",
     "start": "run-p watch:css react-scripts:start",
     "build": "run-p build:css react-scripts:build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --coverage --watchAll",
     "eject": "react-scripts eject",
     "loadtest": "loadtest --rps 5 http://localhost:3000/"
   },
@@ -25,6 +25,30 @@
     "extends": [
       "react-app",
       "react-app/jest"
+    ]
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "!<rootDir>/src/App.tsx",
+      "!<rootDir>/src/index.tsx",
+      "!<rootDir>/src/seed.ts",
+      "!<rootDir>/src/constants/*.ts",
+      "!<rootDir>/src/hooks/*.ts",
+      "!<rootDir>/src/helpers/*.ts",
+      "!<rootDir>/src/interfaces/*.ts",
+      "!<rootDir>/src/services/*.ts"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 90,
+        "functions": 90,
+        "lines": 90,
+        "statements": 90
+      }
+    },
+    "coverageReporters": [
+      "html",
+      "text"
     ]
   },
   "browserslist": {

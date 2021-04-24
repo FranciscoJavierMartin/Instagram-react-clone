@@ -46,8 +46,12 @@ const LoginPage: React.FC = () => {
               className='mt-2 w-6/12 mb-4'
             />
           </h1>
-          {error && <p className='mb-4 text-xs text-red-primary'>{error}</p>}
-          <form onSubmit={handleLogin}>
+          {error && (
+            <p data-testid='error' className='mb-4 text-xs text-red-primary'>
+              {error}
+            </p>
+          )}
+          <form onSubmit={handleLogin} data-testid='login'>
             <input
               aria-label='Enter your email address'
               type='text'
@@ -78,7 +82,11 @@ const LoginPage: React.FC = () => {
         <div className='flex justify-center items-center flex-col w-full bg-white p-4 rounded border border-gray-primary'>
           <p className='text-sm'>
             Don't have an account?{' '}
-            <Link to={SIGNUP_PAGE_ROUTE} className='font-bold text-blue-medium'>
+            <Link
+              to={SIGNUP_PAGE_ROUTE}
+              className='font-bold text-blue-medium'
+              data-testid='sign-up'
+            >
               Sign Up
             </Link>
           </p>
