@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { FirebaseUser } from '../../interfaces/firebase';
 import Header from './Header';
 import Photos from './Photos';
@@ -26,6 +26,7 @@ const initialState: UserProfileState = {
 };
 
 const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
+  const [isLoadingPhotos, setIsLoadingPhotos] = useState<boolean>(false);
   const [{ profile, photosCollection, followerCount }, dispatch] = useReducer(
     reducer,
     initialState
@@ -33,12 +34,14 @@ const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
 
   useEffect(() => {
     (async function getProfileInfoAndPhotos() {
+      setIsLoadingPhotos(true);
       const photos = await getUserPhotosByUserId(user.userId);
       dispatch({
         profile: user,
         photosCollection: photos,
         followerCount: user.followers.length,
       });
+      setIsLoadingPhotos(false);
     })();
   }, [user]);
 
@@ -50,7 +53,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
         followerCount={followerCount}
         setFollowerCount={dispatch}
       />
-      <Photos photos={photosCollection} />
+      <Photos photos={photosCollection} isLoadingPhotos={isLoadingPhotos} />
     </>
   ) : null;
 };
