@@ -3,7 +3,6 @@ import { Redirect, Route, RouteProps } from 'react-router';
 import firebase from 'firebase';
 import { LOGIN_PAGE_ROUTE } from '../constants/routes';
 
-
 interface ProtectedRouteProps extends RouteProps {
   user: firebase.User | null;
 }
