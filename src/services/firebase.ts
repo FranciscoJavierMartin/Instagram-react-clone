@@ -34,7 +34,9 @@ export async function getUserByUserId(userId: string): Promise<FirebaseUser> {
   return user as FirebaseUser;
 }
 
-export async function getUserByUsername(username: string): Promise<FirebaseUser> {
+export async function getUserByUsername(
+  username: string
+): Promise<FirebaseUser> {
   const result = await firebase
     .firestore()
     .collection(FIREBASE_COLLECTION_USERS)
@@ -141,4 +143,60 @@ export async function getPhotos(
   );
 
   return photosWithUserDetails;
+}
+
+export async function getUserPhotosByUserId(
+  userId: string
+): Promise<FirebasePhoto[]> {
+  const result = await firebase
+    .firestore()
+    .collection(FIREBASE_COLLECTION_PHOTOS)
+    .where('userId', '==', userId)
+    .get();
+
+  return result.docs.map<FirebasePhoto>(
+    (item) =>
+      ({
+        ...item.data(),
+        docId: item.id,
+      } as FirebasePhoto)
+  );
+}
+
+/**
+ * @param {string}  loggedInUserId - Currently logged in user document id.
+ * @param {string} profileUserId - Current userId of user profile visited.
+ * @return {Promise<boolean>} - Return true if the current user is following the profile
+ */
+export async function isUserFollowingProfile(
+  loggedInUserId: string,
+  profileUserId: string
+): Promise<boolean> {
+  const result = await firebase
+    .firestore()
+    .collection(FIREBASE_COLLECTION_USERS)
+    .where('userId', '==', loggedInUserId)
+    .where('following', 'array-contains', profileUserId)
+    .get();
+
+  return result.docs.length !== 0;
+}
+
+export async function toggleFollow(
+  isFollowingProfile: boolean,
+  activeUserDocId: string,
+  profileDocId: string,
+  profileUserId: string,
+  followingUserId: string
+) {
+  await updateLoggedInUserFollowing(
+    activeUserDocId,
+    profileUserId,
+    isFollowingProfile
+  );
+  await updateFollowedUserFollowers(
+    profileDocId,
+    followingUserId,
+    isFollowingProfile
+  );
 }

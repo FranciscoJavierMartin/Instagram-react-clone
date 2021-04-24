@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
+import Header from '../components/Header';
+import UserProfile from '../components/profile';
 import { NOT_FOUND_PAGE_ROUTE } from '../constants/routes';
 import { FirebaseUser } from '../interfaces/firebase';
 import { getUserByUsername } from '../services/firebase';
@@ -21,7 +23,10 @@ const ProfilePage: React.FC = () => {
 
   return user ? (
     <div className='bg-gray-background'>
-      <div className='mx-auto max-w-screen-lg'>{user.fullName}</div>
+      <Header />
+      <div className='mx-auto max-w-screen-lg'>
+        <UserProfile user={user} />
+      </div>
     </div>
   ) : null;
 };
