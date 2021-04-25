@@ -7,7 +7,7 @@ const Sidebar: React.FC = () => {
   const { user } = useUser();
 
   return (
-    <div className='p-4'>
+    <div className='hidden lg:block p-4'>
       <User username={user?.username} fullName={user?.fullName} />
       <Suggestions
         userId={user?.userId}

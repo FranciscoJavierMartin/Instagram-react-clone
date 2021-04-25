@@ -2,6 +2,9 @@ module.exports = {
   future: {
     removeDeprecatedGapUtilities: true,
   },
+  purge: {
+    content: ['./src/**/*.tsx'],
+  },
   theme: {
     colors: {
       white: '#ffffff',
