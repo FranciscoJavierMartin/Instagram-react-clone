@@ -7,7 +7,7 @@ import NotFoundPage from '../../pages/NotFoundPage';
 
 describe('<NotFound/>', () => {
   it('renders the not found page with a logged in user', () => {
-    const { getByText, queryByText } = render(
+    const { queryByText } = render(
       <Router>
         <FirebaseContext.Provider
           value={{ firebase: null as any, FieldValue: null as any }}

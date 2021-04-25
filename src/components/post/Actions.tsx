@@ -43,6 +43,7 @@ const Actions: React.FC<ActionsProps> = ({
       <div className='flex justify-between p-4'>
         <div className='flex'>
           <svg
+            data-testid={`like-photo-${docId}`}
             onClick={handleToggleLiked}
             onKeyDown={(event) => {
               if (event.key === 'Enter') {
